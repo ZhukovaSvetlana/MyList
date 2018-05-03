@@ -1,5 +1,3 @@
-import org.omg.CORBA.Object;
-
 import java.util.Arrays;
 
 public class ArrayList implements List {
@@ -7,8 +5,17 @@ public class ArrayList implements List {
     private Object[] array;
     private int size = 0;
 
+    private ArrayList(Object[] array) {
+        this.array = array;
+        size = array.length - 1;
+    }
+
     public ArrayList() {
         array = new Object[10];
+    }
+
+    public ArrayList(int capacity){
+        array = new Object[capacity];
     }
 
     @Override
@@ -42,7 +49,7 @@ public class ArrayList implements List {
     public void add(int index, Object item) {
         checkForRange(index);
         growAsNeeded();
-        shiftItems(index);
+        shiftItemsToRight(index);
         array[index] = item;
         size++;
     }
@@ -52,7 +59,7 @@ public class ArrayList implements List {
             throw new IndexOutOfBoundsException();
     }
 
-    private void shiftItems(int index) {
+    private void shiftItemsToRight(int index) {
         for (int i = size; i > index; --i) {
             array[i] = array[i - 1];
         }
@@ -75,7 +82,6 @@ public class ArrayList implements List {
 
     @Override
     public int lastIndexOf(Object obj) {
-
         for (int i = size - 1; i >= 0; i--) {
             if (obj.equals(array[i])) {
                 return i;
@@ -86,31 +92,39 @@ public class ArrayList implements List {
 
     @Override
     public void set(int index, Object item) {
+        checkForRange(index);
         array[index] = item;
     }
 
     @Override
     public void remove(int index) {
-        for(int i = index; i < size; i-- ) {
-            array[i] = array[i+1];
+        checkForRange(index);
+        shiftItemsToLeft(index);
+        array[--size] = null;
+    }
+
+    private void shiftItemsToLeft(int index) {
+        for (int i = index; i < size - 1; i++) {
+            array[i] = array[i + 1];
         }
     }
 
     @Override
-    public void remove(Object item) {
-        for (int i = 0; i < size; i++) {
-            if (array[i].equals(item)) {
-                for (int j = i; j < size; j++) {
-                    array[j] = array[j + 1];
-                }
-            }
-            break;
-        }
+    public boolean remove(Object item) {
+        int index = indexOf(item);
+        if (index == NOT_FOUND)
+            return false;
+
+        remove(index);
+        return true;
     }
 
     @Override
     public List subList(int from, int to) {
-
-        return null;
+        List list = new ArrayList();
+        for (int i = from; i <= to; i++) {
+            list.add(array[i]);
+        }
+        return list;
     }
 }
