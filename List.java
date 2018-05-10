@@ -1,13 +1,13 @@
-public interface List {
+public interface List<T> {
     boolean isEmpty();
     int size();
-    void add(Object item);
-    void add(int index, Object item);
-    Object get(int index);
-    int indexOf(Object obj);
-    int lastIndexOf(Object obj);
-    void set(int index, Object item);
+    void add(T item);
+    void add(int index, T item);
+    T get(int index);
+    int indexOf(T obj);
+    int lastIndexOf(T obj);
+    void set(int index, T item);
     void remove(int index);
-    boolean remove(Object item);
+    boolean remove(T item);
     List subList(int from, int to);
 }

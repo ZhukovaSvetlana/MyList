@@ -1,11 +1,11 @@
-public interface Deque {
-    void addFirst(Object item);
-    void addLast(Object item);
-    Object removeFirst();
-    Object removeLast();
-    Object getFirst();
-    Object getLast();
-    Object pollFirst();
-    Object pollLast();
+public interface Deque<T> {
+    void addFirst(T item);
+    void addLast(T item);
+    T removeFirst();
+    T removeLast();
+    T getFirst();
+    T getLast();
+    T pollFirst();
+    T pollLast();
 
 }
